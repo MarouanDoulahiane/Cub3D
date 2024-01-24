@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:39:40 by mdoulahi          #+#    #+#             */
-/*   Updated: 2023/11/01 21:43:35 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:40:46 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	i = 0;
-	slen = ft_strlen(s);
+	slen = _strlen(s);
 	if (start >= slen)
 		size = 0;
 	else if (slen - start < len)

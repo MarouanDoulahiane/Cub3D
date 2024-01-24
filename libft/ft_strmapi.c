@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:03:45 by mdoulahi          #+#    #+#             */
-/*   Updated: 2023/11/01 18:00:40 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:41:13 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 
 	if (!s)
 		return (NULL);
-	res = malloc(ft_strlen(s) + 1);
+	res = malloc(_strlen(s) + 1);
 	if (!res)
 		return (NULL);
 	i = 0;

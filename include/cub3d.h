@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 19:45:44 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/22 21:09:15 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:11:22 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 # define CUB3D_H
 
-// # include "get_next_line.h"
+# include "get_next_line.h"
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <stdbool.h>
+# include <limits.h>
 
 //	struct data
 typedef struct s_color
@@ -29,7 +31,7 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
-typedef struct s_data
+typedef struct s_info
 {
 	char	*no;
 	char	*so;
@@ -40,7 +42,7 @@ typedef struct s_data
 	t_color	f;
 
 	char	**map;
-}	t_data;
+}	t_info;
 
 //	printers functions
 void	ft_putstr(char *str, int fd);
@@ -48,6 +50,9 @@ void	print_and_exit(char *msg);
 
 //	parsing functions
 void	check_file_name(char *filename);
-void	parsing(t_data *data, char *filename);
+void	parsing(t_info *data, char *filename);
+
+// 	utils functions
+void	free2d(char **lines);
 
 #endif

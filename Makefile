@@ -1,6 +1,6 @@
 CC			=		CC
 
-CFLAGS		=		-Wall -Wextra -Werror -I./include
+CFLAGS		=		-Wall -Wextra -Werror -I./include #-fsanitize=address -g3
 
 SRC			=		main.c parsing/mainParser.c \
 					get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
@@ -15,7 +15,8 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			make -C libft
-			$(CC) $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME) -L./minilibx -lmlx -framework OpenGL -framework AppKit
+			$(CC) $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME) -framework Cocoa -framework OpenGL -framework IOKit
+ #-L./minilibx -lmlx -framework OpenGL -framework AppKit
 
 %.o:		%.c $(HEADER)
 			$(CC) $(CFLAGS) -c $< -o $@

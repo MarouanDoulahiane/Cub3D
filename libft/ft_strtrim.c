@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 15:33:45 by mdoulahi          #+#    #+#             */
-/*   Updated: 2023/11/01 18:37:05 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:40:56 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	if (!s1 || !set)
 		return (NULL);
 	start = 0;
-	end = ft_strlen(s1);
+	end = _strlen(s1);
 	i = -1;
 	while (start < end && ft_strchr(set, s1[start]))
 		start++;

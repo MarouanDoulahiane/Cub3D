@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 11:38:21 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/22 21:44:21 by mdoulahi         ###   ########.fr       */
+/*   Created: 2024/01/22 22:35:18 by mdoulahi          #+#    #+#             */
+/*   Updated: 2024/01/22 22:36:19 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
+int	ft_strcmp(char *s1, char *s2)
 {
-	size_t	i;
-	size_t	dst_len;
-	size_t	src_len;
+	int	i;
 
-	src_len = _strlen(src);
-	if (!dst && !dstsize)
-		return (src_len);
-	dst_len = _strlen(dst);
 	i = 0;
-	if (dst_len >= dstsize)
-		return (dstsize + src_len);
-	while (src[i] && i + dst_len < dstsize - 1)
-	{
-		dst[dst_len + i] = src[i];
+	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
-	}
-	dst[i + dst_len] = '\0';
-	return (dst_len + src_len);
+	return (s1[i] - s2[i]);
 }

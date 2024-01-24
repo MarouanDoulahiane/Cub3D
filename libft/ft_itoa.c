@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 16:54:59 by mdoulahi          #+#    #+#             */
-/*   Updated: 2023/11/01 22:12:51 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:41:09 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ char	*ft_itoa(int n)
 	char	*res;
 
 	if (n == 0)
-		return (ft_strdup("0"));
+		return (_strdup("0"));
 	else if (n == -2147483648)
-		return (ft_strdup("-2147483648"));
+		return (_strdup("-2147483648"));
 	size = ft_intlen(n);
 	res = malloc(size + 1);
 	if (!res)
