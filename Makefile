@@ -15,8 +15,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			make -C libft
-			$(CC) $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME) -framework Cocoa -framework OpenGL -framework IOKit
- #-L./minilibx -lmlx -framework OpenGL -framework AppKit
+			$(CC) $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME) -L./minilibx -lmlx -framework OpenGL -framework AppKit -fsanitize=address  -g3
 
 %.o:		%.c $(HEADER)
 			$(CC) $(CFLAGS) -c $< -o $@

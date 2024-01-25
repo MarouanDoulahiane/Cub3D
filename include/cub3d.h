@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 19:45:44 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/23 17:11:22 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:00:44 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <math.h>
+# include <mlx.h>
 
 //	struct data
 typedef struct s_color
@@ -30,6 +32,23 @@ typedef struct s_color
 	int	g;
 	int	b;
 }	t_color;
+
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_img;
+
+typedef struct s_player
+{
+	double	x;
+	double	y;
+	char	dir;
+	double	angle;
+}	t_player;
 
 typedef struct s_info
 {
@@ -42,6 +61,12 @@ typedef struct s_info
 	t_color	f;
 
 	char	**map;
+	int		rows;
+	int		cols;
+	t_player	player;
+	void	*mlx;
+	void	*win;
+	t_img	img;
 }	t_info;
 
 //	printers functions

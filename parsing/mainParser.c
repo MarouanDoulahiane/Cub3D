@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 21:01:32 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/23 17:13:38 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:01:34 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char	**get_lines(char *filename)
 	file = _strdup("");
 	while (temp)
 	{
-		temp = ft_strjoin(temp, " ");
+		if (temp[0] == '\n')
+			temp = ft_strjoin(temp, " \n");
 		file = ft_strjoin(file, temp);
 		free(temp);
 		temp = get_next_line(fd);
@@ -431,7 +432,7 @@ void	check_map(t_info *data, char **lines)
 {
 	int	i;
 	int	index;
-(void)data;
+
 	i = 0;
 	while (lines[i] && !is_only_one(lines[i]))
 		i++;
@@ -444,6 +445,48 @@ void	check_map(t_info *data, char **lines)
 	}
 	data->map = generate_rectangle_map(lines + index);
 	is_closed(data->map);
+	data->rows = get_size(data->map);
+	data->cols = get_max_len(data->map);
+}
+
+void	get_player(t_info *data)
+{
+	bool	flag;
+	int		i;
+	int		j;
+
+	i = 0;
+	flag = false;
+	while (data->map[i])
+	{
+		j = 0;
+		while (data->map[i][j])
+		{
+			if (data->map[i][j] == 'N' || data->map[i][j] == 'S' ||
+				data->map[i][j] == 'W' || data->map[i][j] == 'E')
+			{
+				if (flag)
+					print_and_exit("Error: map non valid!\n");
+				data->player.x = j * 64 + 64 / 2;
+				data->player.y = i * 64 + 64 / 2;
+				data->player.dir = data->map[i][j];
+				data->map[i][j] = '0';
+				flag = true;
+			}
+			j++;
+		}
+		i++;
+	}
+	if (!flag)
+		print_and_exit("Error: map non valid!\n");
+	if (data->player.dir == 'W')
+		data->player.angle = M_PI;
+	else if (data->player.dir == 'E')
+		data->player.angle = 0;
+	else if (data->player.dir == 'N')
+		data->player.angle = 3 * M_PI / 2;
+	else if (data->player.dir == 'S')
+		data->player.angle = M_PI / 2;
 }
 
 void	parsing(t_info *data, char *filename)
@@ -456,4 +499,5 @@ void	parsing(t_info *data, char *filename)
 	check_file_data(data, lines);
 	check_map(data, lines);
 	free2d(lines);
+	get_player(data);
 }
