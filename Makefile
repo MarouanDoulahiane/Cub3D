@@ -1,32 +1,32 @@
-CC			=		CC
+SRC	=	main.c parsing/parser.c get_next_line/get_next_line.c \
+		get_next_line/get_next_line_utils.c rendering/renderer.c \
 
-CFLAGS		=		-Wall -Wextra -Werror -I./include #-fsanitize=address -g3
+OBJ	=	$(SRC:.c=.o)
 
-SRC			=		main.c parsing/mainParser.c \
-					get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+NAME	=	cub3D
 
-OBJ			=		$(SRC:.c=.o)
+CC	=	cc
 
-HEADER		=		./include/cub3d.h include/get_next_line.h libft/libft.h
+CFLAGS	=	-Wall -Wextra -Werror
 
-NAME		=		cub3D
 
-all:		$(NAME)
+all:	$(NAME)
 
 $(NAME):	$(OBJ)
-			make -C libft
-			$(CC) $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME) -L./minilibx -lmlx -framework OpenGL -framework AppKit -fsanitize=address  -g3
+	$(MAKE) -C ./libft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) libft/libft.a MLX42/build/libmlx42.a -lglfw -L"/Users/mdoulahi/brew/opt/glfw/lib/" -framework OpenGL -framework AppKit
 
-%.o:		%.c $(HEADER)
-			$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-			make fclean -C libft
-			rm -f $(OBJ)
+	$(MAKE) clean -C ./libft
+	rm -f $(OBJ)
 
-fclean:		clean
-			rm -f $(NAME)
+fclean:	clean
+	$(MAKE) fclean -C ./libft
+	rm -f $(NAME)
 
-re:			fclean all
+re:	fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:	all clean fclean re

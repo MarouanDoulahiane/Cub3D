@@ -6,11 +6,11 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:17:38 by mdoulahi          #+#    #+#             */
-/*   Updated: 2023/11/04 20:23:31 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/28 03:04:58 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../headers/get_next_line.h"
 
 int	ft_strlen(const char *s)
 {

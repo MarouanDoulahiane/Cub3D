@@ -6,11 +6,11 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:14:56 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/22 21:07:33 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/01/28 03:04:44 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/get_next_line.h"
+#include "../headers/get_next_line.h"
 #include <stdio.h>
 
 int	helper(t_data *data)
