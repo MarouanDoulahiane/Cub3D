@@ -1,7 +1,10 @@
 SRC	=	main.c parsing/parser.c get_next_line/get_next_line.c \
 		get_next_line/get_next_line_utils.c rendering/renderer.c \
+		rendering/drawer.c rendering/tools.c
 
 OBJ	=	$(SRC:.c=.o)
+
+HEADERS	=	headers/cub3d.h headers/get_next_line.h headers/libft.h
 
 NAME	=	cub3D
 
@@ -14,9 +17,9 @@ all:	$(NAME)
 
 $(NAME):	$(OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) libft/libft.a MLX42/build/libmlx42.a -lglfw -L"/Users/mdoulahi/brew/opt/glfw/lib/" -framework OpenGL -framework AppKit
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) libft/libft.a MLX42/build/libmlx42.a -lglfw -L"/Users/$(USER)/brew/opt/glfw/lib/" -framework OpenGL -framework AppKit
 
-%.o: %.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

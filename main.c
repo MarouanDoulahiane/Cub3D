@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 02:33:03 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/28 14:45:12 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/02 00:25:48 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,19 @@ void	print_env(t_env e)
 		printf("%s|%s|\n", GREEN, e.map[i]);
 		i++;
 	}
-	printf("player position: %f, %f\n", e.x, e.y);
+	printf("player position: %d, %d\n", e.x, e.y);
+}
+
+void	leaks(void)
+{
+	system("leaks cub3D");
 }
 
 int	main(int ac, char **av)
 {
 	t_env	e;
 
+	atexit(leaks);
 	if (ac != 2)
 	{
 		printf("%sError: usage ./cub3d <filename>\n%s", RED, RESET);

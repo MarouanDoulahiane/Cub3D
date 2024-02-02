@@ -6,16 +6,29 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 02:41:31 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/29 04:44:46 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:16:25 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cub3d.h"
 
-void	printError(char *str)
+void	print_error(char *str)
 {
 	printf("%sError\n%s%s\n", RED, str, RESET);
 	exit(1);
+}
+
+void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }
 
 void	parse_file_name(char *filename)
@@ -24,13 +37,13 @@ void	parse_file_name(char *filename)
 	int		fd;
 
 	if (_strlen(filename) < 4)
-		printError("invalid file name");
+		print_error("invalid file name");
 	ext = filename + _strlen(filename) - 4;
 	if (ft_strcmp(ext, ".cub") != 0)
-		printError("invalid file extension");
+		print_error("invalid file extension");
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		printError("invalid file");
+		print_error("invalid file");
 	close(fd);
 }
 
@@ -43,7 +56,7 @@ char	**read_file(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		printError("invalid file");
+		print_error("invalid file");
 	tmp = get_next_line(fd);
 	line = _strdup("");
 	while (tmp)
@@ -59,7 +72,6 @@ char	**read_file(char *filename)
 	close(fd);
 	return (lines);
 }
-
 
 void	fill_type(char type[6][3])
 {
@@ -86,10 +98,10 @@ void	parse_texture(char **line, t_env *e)
 	int	fd;
 
 	if (get_size(line) != 2)
-		printError("invalid file");
+		print_error("invalid file");
 	fd = open(line[1], O_RDONLY);
 	if (fd == -1)
-		printError("invalid file");
+		print_error("invalid file");
 	close(fd);
 	if (!ft_strcmp("NO", line[0]))
 		e->no = _strdup(line[1]);
@@ -100,7 +112,7 @@ void	parse_texture(char **line, t_env *e)
 	else if (!ft_strcmp("EA", line[0]))
 		e->ea = _strdup(line[1]);
 	else
-		printError("invalid file");
+		print_error("invalid file");
 }
 
 int	count_comma(char *str)
@@ -137,33 +149,27 @@ bool	valid_color(char *rgb)
 
 void	parse_color(char **line, t_env *e)
 {
-	int	i;
-	int	color;
+	int		i;
+	int		color;
 	char	**rgb;
 
 	if (get_size(line) != 2)
-		printError("invalid file");
-	i = 0;
+		print_error("invalid file");
+	i = -1;
 	if (count_comma(line[1]) != 2)
-		printError("invalid file");
+		print_error("invalid file");
 	if (!valid_color(line[1]))
-		printError("invalid file");
-	while (line[1][i])
-	{
-		if (line[1][i] == ',')
-			line[1][i] = ' ';
-		i++;
-	}
-	rgb = ft_split(line[1], ' ');
+		print_error("invalid file");
+	rgb = ft_split(line[1], ',');
 	if (get_size(rgb) != 3)
-		printError("invalid file");
+		print_error("invalid file");
 	i = 0;
-	color = ft_atoi(rgb[0]) << 24 | ft_atoi(rgb[1]) << 16 | ft_atoi(rgb[2]) << 8 | 255;
+	color = get_rgba(ft_atoi(rgb[0]), ft_atoi(rgb[1]), ft_atoi(rgb[2]), 255);
 	if (!ft_strcmp("C", line[0]))
 		e->ceiling = color;
 	else if (!ft_strcmp("F", line[0]))
 		e->floor = color;
-	printf("Hex Color: 0x%06X\n", color);
+	free_split(rgb);
 }
 
 void	parse_resolution(char **line, t_env *e)
@@ -193,19 +199,6 @@ int	find_type(char type[6][3], char *str)
 	return (-1);
 }
 
-void	free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
 bool	is_empty(char *str)
 {
 	int	i;
@@ -230,11 +223,11 @@ void	parse_data(char **temp, t_env *e, bool find_all[7])
 		return ;
 	fill_type(type);
 	if (get_size(temp) != 2)
-		printError("invalid file");
+		print_error("invalid file");
 	if (find_type(type, temp[0]) == -1)
-		printError("invalid file");
+		print_error("invalid file");
 	if (find_all[find_type(type, temp[0])] == true)
-		printError("invalid file");
+		print_error("invalid file");
 	if (find_type(type, temp[0]) < 4)
 		parse_texture(temp, e);
 	else if (find_type(type, temp[0]) < 6)
@@ -288,7 +281,7 @@ void	parse_file_lines(char **lines, t_env *e)
 	while (lines[++i])
 	{
 		temp = ft_split(lines[i], ' ');
-		if  (!temp[0])
+		if (!temp[0])
 		{
 			free_split(temp);
 			continue ;
@@ -302,7 +295,7 @@ void	parse_file_lines(char **lines, t_env *e)
 		free_split(temp);
 	}
 	if (!are_all_true(find_all) || !rich_start_map(lines[i]))
-		printError("invalid file");
+		print_error("invalid file");
 }
 
 size_t	max_len(char **lines)
@@ -324,14 +317,14 @@ size_t	max_len(char **lines)
 char	*fill_max_line_len(char **lines, char *str)
 {
 	size_t		i;
-	size_t	len;
-	char	*res;
+	size_t		len;
+	char		*res;
 
 	i = 0;
 	len = max_len(lines);
 	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
-		printError("malloc error");
+		print_error("malloc error");
 	while (str[i])
 	{
 		res[i] = str[i];
@@ -344,7 +337,6 @@ char	*fill_max_line_len(char **lines, char *str)
 	}
 	res[i] = '\0';
 	return (res);
-
 }
 
 bool	is_white_space(char *str)
@@ -395,27 +387,25 @@ void	parse_map_is_valid(t_env *e)
 	i = -1;
 	while (e->map[++i])
 	{
-		j = 0;
+		j = -1;
 		if (is_white_space(e->map[i]))
-			printError("invalid file");
-		while (e->map[i][j])
+			print_error("invalid file");
+		while (e->map[i][++j])
 		{
 			if (!is_valid_map_char(e->map[i][j]))
-				printError("invalid file");
+				print_error("invalid file");
 			if (is_player(e->map[i][j]))
 			{
 				if (e->x != -1 || e->y != -1)
-					printError("invalid file");
+					print_error("invalid file");
 				e->x = j * SIZE + SIZE / 2;
 				e->y = i * SIZE + SIZE / 2;
-				printf("px: %d, y: %d\n", e->x, e->y);
 				e->angle = get_angle(e->map[i][j]);
 			}
-			j++;
 		}
 	}
 	if (e->x == -1 || e->y == -1)
-		printError("invalid file");
+		print_error("invalid file");
 }
 
 bool	is_not_wall(char c)
@@ -438,10 +428,10 @@ void	parse_map_is_closed(t_env *e)
 			if (is_not_wall(e->map[i][j]))
 			{
 				if (i == 0 || j == 0 || !e->map[i + 1] || !e->map[i][j + 1])
-					printError("invalid file");
+					print_error("invalid file");
 				if (e->map[i - 1][j] == ' ' || e->map[i][j - 1] == ' '
 					|| e->map[i + 1][j] == ' ' || e->map[i][j + 1] == ' ')
-					printError("invalid file");
+					print_error("invalid file");
 			}
 			j++;
 		}

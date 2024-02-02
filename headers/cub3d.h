@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 02:36:34 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/01/29 04:45:04 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:07:24 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,14 @@
 # include "../MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 
-
 # define SIZE 64
-# define WIDTH (SIZE * 20)
-# define HEIGHT (SIZE * 10)
+# define WIDTH 1280
+# define HEIGHT 640
 
 typedef struct s_env
 {
-	int		x;
-	int		y;
+	int			x;
+	int			y;
 	double		angle;
 	char		**map;
 	int			rows;
@@ -50,10 +49,22 @@ typedef struct s_env
 	char		*ea;
 	int			floor;
 	int			ceiling;
-	double			mini_x;
-	double			mini_y;
+	double		mini_x;
+	double		mini_y;
 	mlx_t		*mlx;
 	mlx_image_t	*img;
+	int			p_x;
+	int			p_y;
+	int			m_x;
+	int			m_y;
+	int			s_x;
+	int			s_y;
+	int			map_x;
+	int			map_y;
+	bool		facing_down;
+	bool		facing_left;
+	bool		facing_right;
+	bool		facing_up;
 }				t_env;
 
 typedef struct s_ray
@@ -62,8 +73,6 @@ typedef struct s_ray
 	double		yintercept;
 	double		x_step;
 	double		y_step;
-	double		dir_x;
-	double		dir_y;
 	bool		facing_down;
 	bool		facing_left;
 	bool		facing_right;
@@ -75,9 +84,26 @@ typedef struct s_ray
 
 // ------------------ parser ------------------
 void	parse_file(char *filename, t_env *e);
-void	printError(char *str);
+void	print_error(char *str);
+int		get_rgba(int r, int g, int b, int a);
 
 // ------------------ renderer ------------------
 void	rendering(t_env *e);
+void	draw_mini_map(t_env *e);
+void	draw_player(t_env *e);
+void	draw_circle(t_env *e, int radius);
+void	draw_grep_map(t_env *e);
+void	_inside_map(t_env *e, int x, int y);
+
+// ------------------ tools ------------------
+double	normalize_angle(double angle);
+void	init_ray_h(t_ray *ray, t_env *data, double angle);
+void	init_ray_v(t_ray *ray, t_env *data, double angle);
+
+// ------------------ drawer ------------------
+double	normalize_angle(double angle);
+void	init_ray_h(t_ray *ray, t_env *e, double angle);
+void	init_ray_v(t_ray *ray, t_env *e, double angle);
+void	draw_grep_map(t_env *e);
 
 #endif
