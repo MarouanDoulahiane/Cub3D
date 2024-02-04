@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 02:36:34 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/02 17:07:24 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:24:10 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,19 @@ typedef struct s_ray
 void	parse_file(char *filename, t_env *e);
 void	print_error(char *str);
 int		get_rgba(int r, int g, int b, int a);
+void	parse_map_is_closed(t_env *e);
+void	parse_map_is_valid(t_env *e);
+bool	is_white_space(char *str);
+bool	is_valid_map_char(char c);
+void	parse_map(char **lines, t_env *e);
+bool	rich_start_map(char *line);
+int		get_size(char **temp);
+void	parse_file_lines(char **lines, t_env *e);
+void	fill_type(char type[6][3]);
+int		find_type(char type[6][3], char *str);
+void	parse_texture(char **line, t_env *e);
+void	parse_color(char **line, t_env *e);
+void	free_split(char **str);
 
 // ------------------ renderer ------------------
 void	rendering(t_env *e);
