@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 02:36:34 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/04 18:24:10 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:34:38 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,16 @@ void	draw_player(t_env *e);
 void	draw_circle(t_env *e, int radius);
 void	draw_grep_map(t_env *e);
 void	_inside_map(t_env *e, int x, int y);
+void	move_up(t_env *e);
+void	move_down(t_env *e);
+void	move_right(t_env *e);
+void	move_left(t_env *e);
 
 // ------------------ tools ------------------
 double	normalize_angle(double angle);
 void	init_ray_h(t_ray *ray, t_env *data, double angle);
 void	init_ray_v(t_ray *ray, t_env *data, double angle);
+bool	can_move(t_env *e, int x, int y);
 
 // ------------------ drawer ------------------
 double	normalize_angle(double angle);

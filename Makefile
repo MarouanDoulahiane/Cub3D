@@ -2,7 +2,7 @@ SRC	=	main.c parsing/parser.c get_next_line/get_next_line.c \
 		get_next_line/get_next_line_utils.c rendering/renderer.c \
 		rendering/drawer.c rendering/tools.c parsing/parser_1.c \
 		parsing/parser_2.c parsing/parser_3.c parsing/parser_4.c \
-		parsing/parser_5.c
+		parsing/parser_5.c rendering/renderer_1.c
 
 OBJ	=	$(SRC:.c=.o)
 

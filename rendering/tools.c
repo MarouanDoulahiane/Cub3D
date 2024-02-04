@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:35:29 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/02 16:36:41 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/04 19:56:04 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	get_rgba(int r, int g, int b, int a)
 {
 	return ((r << 24) | (g << 16) | (b << 8) | a);
 }
-
 
 void	init_ray_h(t_ray *ray, t_env *e, double angle)
 {

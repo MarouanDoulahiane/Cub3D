@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 06:44:45 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/02 22:23:21 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:58:03 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,79 +50,25 @@ void	draw_circle(t_env *e, int radius)
 		i++;
 	}
 }
-// e->map[y / SIZE][x / SIZE] != '1' && e->map[y / SIZE][x / SIZE] != ' ' &&  (e->map[e->y / SIZE][x / SIZE] != '1' && e->map[y / SIZE][e->x / SIZE] != '1')
-bool	can_move(t_env *e, int x, int y)
-{
-	if (e->map[y / SIZE][x / SIZE] != '1' && e->map[y / SIZE][x / SIZE] != ' ' &&  (e->map[e->y / SIZE][x / SIZE] != '1' && e->map[y / SIZE][e->x / SIZE] != '1'))
-		return (true);
-	return (false);
-}
 
-
-void	move_up(t_env *e)
+void	move_angle(t_env *e)
 {
-	int	x;
-	int	y;
-	
-	x = e->x + cos(e->angle) * 5;
-	y = e->y + sin(e->angle) * 5;
-	if (can_move(e, x, y))
+	if (mlx_is_key_down(e->mlx, MLX_KEY_LEFT))
 	{
-		e->x = x;
-		e->y = y;
+		e->angle -= 0.1;
+		e->angle = normalize_angle(e->angle);
 	}
-}
-
-void	move_down(t_env *e)
-{
-	int	x;
-	int	y;
-	
-	x = e->x - cos(e->angle) * 5;
-	y = e->y - sin(e->angle) * 5;
-	if (can_move(e, x, y))
+	if (mlx_is_key_down(e->mlx, MLX_KEY_RIGHT))
 	{
-		e->x = x;
-		e->y = y;
-	}
-}
-
-void	move_right(t_env *e)
-{
-	int	x;
-	int	y;
-	
-	x = e->x - sin(e->angle) * 5;
-	y = e->y + cos(e->angle) * 5;
-	if (can_move(e, x, y))
-	{
-		e->x = x;
-		e->y = y;
-	}
-}
-
-void	move_left(t_env *e)
-{
-	int	x;
-	int	y;
-	
-	x = e->x + sin(e->angle) * 5;
-	y = e->y - cos(e->angle) * 5;
-	if (can_move(e, x, y))
-	{
-		e->x = x;
-		e->y = y;
+		e->angle += 0.1;
+		e->angle = normalize_angle(e->angle);
 	}
 }
 
 void	movement(void *param)
 {
 	t_env	*e;
-	int		x;
-	int		y;
 
-	x = -1;
-	y = -1;
 	e = (t_env *)param;
 	if (mlx_is_key_down(e->mlx, MLX_KEY_ESCAPE))
 	{
@@ -137,26 +83,7 @@ void	movement(void *param)
 		move_left(e);
 	if (mlx_is_key_down(e->mlx, MLX_KEY_D))
 		move_right(e);
-	if (mlx_is_key_down(e->mlx, MLX_KEY_LEFT))
-	{
-		e->angle -= 0.1;
-		e->angle = normalize_angle(e->angle);
-	}
-	if (mlx_is_key_down(e->mlx, MLX_KEY_RIGHT))
-	{
-		e->angle += 0.1;
-		e->angle = normalize_angle(e->angle);
-	}
-	if (x == -1 && y == -1)
-	{
-		draw_mini_map(e);
-		return ;
-	}
-	if (e->map[y / SIZE][x / SIZE] != '1' && e->map[y / SIZE][x / SIZE] != ' ' &&  (e->map[e->y / SIZE][x / SIZE] != '1' && e->map[y / SIZE][e->x / SIZE] != '1'))
-	{
-		e->x = x;
-		e->y = y;
-	}
+	move_angle(e);
 	draw_mini_map(e);
 }
 
