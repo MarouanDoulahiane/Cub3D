@@ -6,47 +6,11 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:18:29 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/04 20:01:57 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:24:07 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cub3d.h"
-
-void	rendering_wall(t_env *e, double distance,
-		int col, bool isvertical)
-{
-	double	ratio;
-	int		wall_height;
-	int		start;
-	int		end;
-	int		i;
-	int		color;
-
-	ratio = SIZE / distance;
-	wall_height = HEIGHT * ratio;
-	start = (HEIGHT - wall_height) / 2;
-	if (start < 0)
-		start = 0;
-	end = start + wall_height;
-	if (end > HEIGHT)
-		end = HEIGHT;
-	i = 0;
-	while (i < HEIGHT)
-	{
-		if (i < start)
-			mlx_put_pixel(e->img, col, i, e->ceiling);
-		else if (i >= start && i < end)
-		{
-			color = get_rgba(255, 0, 0, 255);
-			if (isvertical)
-				color = get_rgba(0, 255, 0, 255);
-			mlx_put_pixel(e->img, col, i, color);
-		}
-		else
-			mlx_put_pixel(e->img, col, i, e->floor);
-		i++;
-	}
-}
 
 double	cast_ray_horizontal(t_env *data, double angle)
 {
@@ -57,15 +21,18 @@ double	cast_ray_horizontal(t_env *data, double angle)
 	while (ray.xhit >= 0 && ray.xhit < data->cols * SIZE && ray.yhit >= 0
 		&& ray.yhit < data->rows * SIZE)
 	{
-		if (data->map[(long)ray.yhit / SIZE][(long)ray.xhit / SIZE] == '1')
+		if (data->map[(long)(ray.yhit - ray.facing_up) / SIZE] \
+			[(long)ray.xhit / SIZE] == '1')
 			break ;
 		ray.xhit += ray.x_step;
 		ray.yhit += ray.y_step;
 	}
+	data->x_hit = ray.xhit;
+	data->y_hit = ray.yhit;
 	return (sqrt(pow(ray.xhit - data->x, 2) + pow(ray.yhit - data->y, 2)));
 }
 
-double	cast_ray_vertical(t_env *data, double angle)
+double	cast_ray_vertical(t_env *data, double angle, double destance_h)
 {
 	t_ray	ray;
 
@@ -74,65 +41,70 @@ double	cast_ray_vertical(t_env *data, double angle)
 	while (ray.xhit >= 0 && ray.xhit < data->cols * SIZE
 		&& ray.yhit >= 0 && ray.yhit < data->rows * SIZE)
 	{
-		if (data->map[(long)ray.yhit / SIZE][(long)ray.xhit / SIZE] == '1')
+		if (data->map[(long)ray.yhit / SIZE] \
+			[(long)(ray.xhit - ray.facing_left) / SIZE] == '1')
 			break ;
 		ray.xhit += ray.x_step;
 		ray.yhit += ray.y_step;
 	}
+	if (destance_h > sqrt(pow(ray.xhit - data->x, 2) \
+		+ pow(ray.yhit - data->y, 2)))
+	{
+		data->x_hit = ray.xhit;
+		data->y_hit = ray.yhit;
+	}
 	return (sqrt(pow(ray.xhit - data->x, 2) + pow(ray.yhit - data->y, 2)));
+}
+
+int	find_direction(double angle, bool isvertical)
+{
+	if (!isvertical)
+	{
+		if (angle >= 0 && angle < M_PI)
+			return (SOUTH);
+		return (NORTH);
+	}
+	else
+	{
+		if (angle >= M_PI / 2 && angle < 3 * M_PI / 2)
+			return (WEST);
+	}
+	return (EAST);
 }
 
 void	draw_player(t_env *e)
 {
 	double	angle;
-	double	distance_h;
-	double	distance_v;
 	bool	isvertical;
 	int		i;
 
-	i = 0;
+	i = -1;
 	angle = e->angle - (60 * M_PI / 180) / 2;
-	while (i < WIDTH)
+	while (++i < WIDTH)
 	{
-		distance_h = cast_ray_horizontal(e, angle);
-		distance_v = cast_ray_vertical(e, angle);
-		isvertical = distance_h > distance_v;
-		if (distance_v > distance_h)
+		angle = normalize_angle(angle);
+		e->x_hit = 0;
+		e->y_hit = 0;
+		e->distance_h = cast_ray_horizontal(e, angle);
+		e->distance_v = cast_ray_vertical(e, angle, e->distance_h);
+		isvertical = e->distance_h > e->distance_v;
+		if (e->distance_v > e->distance_h)
 		{
-			distance_v = distance_h;
+			e->distance_v = e->distance_h;
 			isvertical = false;
 		}
-		distance_v *= cos(angle - e->angle);
-		rendering_wall(e, distance_v, i, isvertical);
+		e->distance_v *= cos(angle - e->angle);
+		e->direction = find_direction(angle, isvertical);
+		e->wall_height = HEIGHT * SIZE / e->distance_v;
+		rendering_wall(e, i, isvertical);
 		angle += (60 * M_PI / 180) / WIDTH;
-		i++;
 	}
 }
 
 void	draw_mini_map(t_env *e)
 {
-	int	x;
-	int	y;
-
-	y = 0;
 	mlx_delete_image(e->mlx, e->img);
 	e->img = mlx_new_image(e->mlx, WIDTH, HEIGHT);
 	mlx_image_to_window(e->mlx, e->img, 0, 0);
 	draw_player(e);
-	while (y < e->rows * SIZE)
-	{
-		x = 0;
-		while (x < e->cols * SIZE)
-		{
-			e->s_x = x - e->m_x + e->p_x;
-			e->s_y = y - e->m_y + e->p_y;
-			e->map_x = e->x + e->s_x - e->p_x;
-			e->map_y = e->y + e->s_y - e->p_y;
-			_inside_map(e, e->map_x, e->map_y);
-			x++;
-		}
-		y++;
-	}
-	draw_circle(e, 5);
-	draw_grep_map(e);
 }

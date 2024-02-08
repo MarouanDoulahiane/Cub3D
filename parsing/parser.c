@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 02:41:31 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/04 18:39:20 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:59:48 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_error(char *str)
 {
-	printf("%sError\n%s%s\n", RED, str, RESET);
+	printf("%s%s%s\n", RED, str, RESET);
 	exit(1);
 }
 
@@ -37,13 +37,13 @@ void	parse_file_name(char *filename)
 	int		fd;
 
 	if (_strlen(filename) < 4)
-		print_error("invalid file name");
+		print_error("Error\ninvalid file name");
 	ext = filename + _strlen(filename) - 4;
 	if (ft_strcmp(ext, ".cub") != 0)
-		print_error("invalid file extension");
+		print_error("Error\ninvalid file extension");
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	close(fd);
 }
 
@@ -56,7 +56,7 @@ char	**read_file(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	tmp = get_next_line(fd);
 	line = _strdup("");
 	while (tmp)

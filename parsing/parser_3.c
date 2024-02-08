@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 18:19:23 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/04 18:22:25 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:36:32 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	parse_data(char **temp, t_env *e, bool find_all[7])
 		return ;
 	fill_type(type);
 	if (get_size(temp) != 2)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	if (find_type(type, temp[0]) == -1)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	if (find_all[find_type(type, temp[0])] == true)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	if (find_type(type, temp[0]) < 4)
 		parse_texture(temp, e);
 	else if (find_type(type, temp[0]) < 6)
@@ -108,5 +108,5 @@ void	parse_file_lines(char **lines, t_env *e)
 		free_split(temp);
 	}
 	if (!are_all_true(find_all) || !rich_start_map(lines[i]))
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 }

@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 16:57:49 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/04 16:58:00 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:36:16 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ void	parse_map_is_valid(t_env *e)
 	{
 		j = -1;
 		if (is_white_space(e->map[i]))
-			print_error("invalid file");
+			print_error("Error\ninvalid file");
 		while (e->map[i][++j])
 		{
 			if (!is_valid_map_char(e->map[i][j]))
-				print_error("invalid file");
+				print_error("Error\ninvalid file");
 			if (is_player(e->map[i][j]))
 			{
 				if (e->x != -1 || e->y != -1)
-					print_error("invalid file");
+					print_error("Error\ninvalid file");
 				e->x = j * SIZE + SIZE / 2;
 				e->y = i * SIZE + SIZE / 2;
 				e->angle = get_angle(e->map[i][j]);
@@ -58,7 +58,7 @@ void	parse_map_is_valid(t_env *e)
 		}
 	}
 	if (e->x == -1 || e->y == -1)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 }
 
 bool	is_not_wall(char c)
@@ -81,10 +81,10 @@ void	parse_map_is_closed(t_env *e)
 			if (is_not_wall(e->map[i][j]))
 			{
 				if (i == 0 || j == 0 || !e->map[i + 1] || !e->map[i][j + 1])
-					print_error("invalid file");
+					print_error("Error\ninvalid file");
 				if (e->map[i - 1][j] == ' ' || e->map[i][j - 1] == ' '
 					|| e->map[i + 1][j] == ' ' || e->map[i][j + 1] == ' ')
-					print_error("invalid file");
+					print_error("Error\ninvalid file");
 			}
 			j++;
 		}

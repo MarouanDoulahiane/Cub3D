@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 18:16:32 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/04 18:17:24 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:36:23 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*fill_max_line_len(char **lines, char *str)
 	len = max_len(lines);
 	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
-		print_error("malloc error");
+		print_error("Error\nmalloc error");
 	while (str[i])
 	{
 		res[i] = str[i];
@@ -86,6 +86,8 @@ void	parse_map(char **lines, t_env *e)
 		i++;
 	}
 	e->map = malloc(sizeof(char *) * (get_size(lines) - i + 1));
+	if (!e->map)
+		print_error("Error\nmalloc error");
 	j = 0;
 	while (lines[j + i])
 	{

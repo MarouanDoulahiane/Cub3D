@@ -6,7 +6,7 @@
 /*   By: mdoulahi <mdoulahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 18:21:47 by mdoulahi          #+#    #+#             */
-/*   Updated: 2024/02/04 18:38:50 by mdoulahi         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:36:45 by mdoulahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	parse_texture(char **line, t_env *e)
 	int	fd;
 
 	if (get_size(line) != 2)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	fd = open(line[1], O_RDONLY);
 	if (fd == -1)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	close(fd);
 	if (!ft_strcmp("NO", line[0]))
 		e->no = _strdup(line[1]);
@@ -41,7 +41,7 @@ void	parse_texture(char **line, t_env *e)
 	else if (!ft_strcmp("EA", line[0]))
 		e->ea = _strdup(line[1]);
 	else
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 }
 
 int	count_comma(char *str)
@@ -83,15 +83,15 @@ void	parse_color(char **line, t_env *e)
 	char	**rgb;
 
 	if (get_size(line) != 2)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	i = -1;
 	if (count_comma(line[1]) != 2)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	if (!valid_color(line[1]))
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	rgb = ft_split(line[1], ',');
 	if (get_size(rgb) != 3)
-		print_error("invalid file");
+		print_error("Error\ninvalid file");
 	i = 0;
 	color = get_rgba(ft_atoi(rgb[0]), ft_atoi(rgb[1]), ft_atoi(rgb[2]), 255);
 	if (!ft_strcmp("C", line[0]))
